@@ -1,19 +1,23 @@
 plugins {
-    java
-    application // permet de définir une classe principale pour lancer l'application
+    id("java")
+    id("application")
+    id("org.openjfx.javafxplugin") version "0.1.0"
+}
+
+application {
+    mainClass.set("fr.asenka.visu.App")
+}
+
+javafx {
+    version = "21"
+    modules("javafx.controls", "javafx.graphics", "javafx.fxml")
 }
 
 repositories {
     mavenCentral()
 }
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
-    }
-}
+dependencies {
 
-application {
-    mainClass.set("fr.asenka.visu.Main")
 }
 
