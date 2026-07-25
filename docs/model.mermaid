@@ -1,0 +1,48 @@
+classDiagram
+    direction LR
+
+    class Graph {
+        +Map<Long, Node> nodes
+        +List<Edge> edges
+        +addNode(Node)
+        +addEdge(Edge)
+        +getNode(long)
+        +getAllNodes()
+        +getAllEdges()
+    }
+
+    class Node {
+        +long id
+        +String label
+        +String content
+    }
+
+    class DisplayNode {
+        +double x
+        +double y
+        +String color
+        +updatePosition(x, y)
+    }
+
+    class Edge {
+        +long id
+        +Node source
+        +Node target
+        +String label
+    }
+
+    class DisplayEdge {
+        +String color
+    }
+
+%% Relations d'héritage
+    Node <|-- DisplayNode : "Is a"
+    Edge <|-- DisplayEdge : "Is a"
+
+%% Relations d'agrégation
+Graph "1" o-- "*" Node : "contains"
+Graph "1" o-- "*" Edge : "contains"
+
+%% Relations de structure
+Node "1" -- "0..*" Edge : "source"
+Node "1" -- "0..*" Edge : "target"

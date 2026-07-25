@@ -12,7 +12,6 @@ bin/
 *.iml
 *.fw9.lock
 *. দিল.lock
-.DS_Store
 
 # Eclipse
 .settings/

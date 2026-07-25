@@ -18,6 +18,7 @@ repositories {
 }
 
 dependencies {
-
+    compileOnly("org.projectlombok:lombok:${project.property("lombok-version")}")
+    annotationProcessor("org.projectlombok:lombok:${project.property("lombok-version")}")
 }
 
