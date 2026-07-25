@@ -1,0 +1,39 @@
+# --- Build Tools ---
+.gradle/
+build/
+out/
+bin/
+
+# --- IDEs ---
+# IntelliJ IDEA
+.idea/
+*.iws
+*.ipr
+*.iml
+*.fw9.lock
+*. দিল.lock
+.DS_Store
+
+# Eclipse
+.settings/
+.project
+.classpath
+.factorypath
+
+# VS Code
+.vscode/
+
+# --- Logs & Temp ---
+*.log
+*.tmp
+*.swp
+
+# --- OS Files ---
+.DS_Store
+Thumbs.db
+
+# --- Secrets ---
+.env
+*.secrets
+*.pem
+
