@@ -12,7 +12,7 @@ public class GraphView extends Pane {
 
     private final Graph graph;
     private final Map<Long, NodeView> nodeViews = new HashMap<>();
-    private final Map<Long, EdgeView> edgeViews = new HashMap<>();
+//    private final Map<Long, EdgeView> edgeViews = new HashMap<>();
 
     public GraphView(Graph graph) {
         this.graph = graph;
@@ -20,30 +20,25 @@ public class GraphView extends Pane {
     }
 
     private void render() {
-        // 1. Création des nœuds
         for (Node node : graph.getNodes()) {
             NodeView view = new NodeView(node);
             nodeViews.put(node.getId(), view);
-            this.getChildren().add(view);
+            getChildren().add(view);
         }
 
-        // 2. Création des liens
         for (Edge edge : graph.getEdges()) {
             EdgeView view = new EdgeView(edge);
-            edgeViews.put(edge.getId(), view);
-            this.getChildren().add(view);
-
-            // Mise à jour immédiate de la position du lien
+            getChildren().add(view);
             updateEdgePosition(view);
         }
     }
 
-    private void updateEdgePosition(EdgeView view) {
-        NodeView source = nodeViews.get(view.getModel().getSourceNodeId());
-        NodeView target = nodeViews.get(view.getModel().getTargetNodeId());
+    private void updateEdgePosition(EdgeView edgeView) {
+        NodeView source = nodeViews.get(edgeView.getModel().getSourceNodeId());
+        NodeView target = nodeViews.get(edgeView.getModel().getTargetNodeId());
 
         if (source != null && target != null) {
-            view.update(source, target);
+            edgeView.update(source, target);
         }
     }
 }

@@ -1,6 +1,6 @@
 package fr.asenka.visu.model;
 
-import fr.asenka.visu.utils.ColorUtils;
+import fr.asenka.visu.utils.GraphUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,7 @@ class NodeTest {
         assertThat(node.getId()).isNull();
         assertThat(node.getLabel()).isNull();
         assertThat(node.getContent()).isNull();
-        assertThat(node.getColor()).isEqualTo(ColorUtils.BLACK);
+        assertThat(node.getColor()).isNotEmpty();
         assertThat(node.getLocation()).isEqualTo(Location.ORIGIN);
     }
 

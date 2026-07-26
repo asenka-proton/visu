@@ -1,40 +1,37 @@
 package fr.asenka.visu;
 
-import fr.asenka.visu.model.Edge;
 import fr.asenka.visu.model.Graph;
-import fr.asenka.visu.model.Location;
 import fr.asenka.visu.model.Node;
 import fr.asenka.visu.ui.views.GraphView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.net.URL;
+
+import static fr.asenka.visu.utils.JavaFXUtils.setCssStylesheet;
+
 
 public class App extends Application {
 
+    private static final String STYLESHEET = "/css/style.css";
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         final Graph graph = new Graph();
 
-        final Node n1 = Node.builder().id(1L).label("Idée A").location(new Location(50, 50)).build();
-        final Node n2 = Node.builder().id(2L).label("Idée B").location(new Location(200, 50)).build();
+        final Node n1 = graph.createNode("a", 50, 50);
+        final Node n2 = graph.createNode("b", 50, 200);
+        final Node n3 = graph.createNode("c", 200, 200);
 
-        graph.addNode(n1);
-        graph.addNode(n2);
-
-        final Edge e1 = Edge.builder()
-                .id(100L)
-                .sourceNodeId(1L)
-                .targetNodeId(2L)
-                .label("lié à")
-                .build();
-        graph.addEdge(e1);
+        graph.createEdge("", n1, n2);
+        graph.createEdge("", n2, n3);
 
         final GraphView graphView = new GraphView(graph);
 
         final Scene scene = new Scene(graphView, 800, 600);
-        primaryStage.setTitle("VISU - Aperçu");
+        setCssStylesheet(scene, STYLESHEET);
+        primaryStage.setTitle("VISU");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -42,4 +39,6 @@ public class App extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
+
 }

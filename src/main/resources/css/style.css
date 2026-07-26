@@ -1,0 +1,29 @@
+.node-container {
+    -fx-background-color: transparent;
+}
+
+.node-shape {
+    /* Couleur de fond (dynamique en Java, mais tu peux mettre une couleur par défaut ici) */
+    -fx-background-color: #5d6d7e;
+
+    /* Bordure */
+    -fx-stroke: white;
+    -fx-stroke-width: 2;
+
+    /* Arrondi des coins (plus le chiffre est haut, plus c'est rond) */
+    -fx-Sell-radius: 15;
+
+    /* Ombre portée (type, couleur, rayon, décalage X, décalage Y) */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 0);
+}
+
+.node-label {
+    -fx-font-family: "Arial";
+    -fx-font-size: 12px;
+    -fx-fill: white;
+    -fx-font-weight: bold;
+}
+
+.edge {
+    -fx-stroke: gray;
+}

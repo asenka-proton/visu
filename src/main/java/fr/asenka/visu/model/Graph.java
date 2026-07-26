@@ -1,5 +1,7 @@
 package fr.asenka.visu.model;
 
+import fr.asenka.visu.utils.GraphUtils;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,6 +11,36 @@ public class Graph {
 
     private final Map<Long, Node> nodes = new HashMap<>();
     private final Map<Long, Edge> edges = new HashMap<>();
+
+    public Node createNode(String label, double x, double y) {
+        return createNode(label, new Location(x, y));
+    }
+
+    public Node createNode(String label, Location location) {
+
+        final Node node = Node.builder()
+                .id(GraphUtils.getId(this))
+                .label(label)
+                .location(location)
+                .build();
+        addNode(node);
+        return node;
+    }
+
+    public Edge createEdge(String label, Node source, Node target) {
+        return createEdge(label, source.getId(), target.getId());
+    }
+
+    public Edge createEdge(String label, long sourceId, long targetId) {
+        final Edge edge = Edge.builder()
+                .id(GraphUtils.getId(this))
+                .label(label)
+                .sourceNodeId(sourceId)
+                .targetNodeId(targetId)
+                .build();
+        addEdge(edge);
+        return edge;
+    }
 
     public void addNode(Node node) {
 
@@ -62,6 +94,10 @@ public class Graph {
 
     public Collection<Edge> getEdges() {
         return Collections.unmodifiableCollection(edges.values());
+    }
+
+    public boolean contains(long id) {
+        return edges.containsKey(id) || nodes.containsKey(id);
     }
 
     public void removeNode(long id) {

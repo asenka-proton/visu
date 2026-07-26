@@ -3,8 +3,6 @@ package fr.asenka.visu.model;
 import lombok.Builder;
 import lombok.Data;
 
-import static fr.asenka.visu.utils.ColorUtils.BLACK;
-
 @Data
 @Builder
 public class Node {
@@ -13,7 +11,7 @@ public class Node {
     private String label;
     private String content;
     @Builder.Default
-    private String color = BLACK;
+    private String color = "#FFFFF";
     @Builder.Default
     private Location location = Location.ORIGIN;
 

@@ -2,11 +2,11 @@ package fr.asenka.visu.ui.views;
 
 import fr.asenka.visu.model.Node;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import lombok.Getter;
+
+import static fr.asenka.visu.utils.JavaFXUtils.applyCssClass;
 
 public class NodeView extends StackPane {
 
@@ -18,14 +18,12 @@ public class NodeView extends StackPane {
     public NodeView(Node model) {
         this.model = model;
 
-        this.shape = new Rectangle(100, 50);
-        this.shape.setStroke(Color.BLACK);
-        this.shape.setFill(Color.BLACK);
-        this.shape.setStrokeWidth(2);
+        shape = new Rectangle(50, 50);
+        label = new Text(model.getLabel());
 
-        this.label = new Text(model.getLabel());
-        this.label.setFont(Font.font("Arial", 12));
-        this.label.setStroke(Color.WHITE);
+        applyCssClass(this, "node-container");
+        applyCssClass(shape, "node-shape");
+        applyCssClass(label, "node-label");
 
         getChildren().addAll(shape, label);
 
