@@ -22,22 +22,22 @@ public class GraphView extends Pane {
 
     private void render() {
         for (Node node : graph.getNodes()) {
-            NodeView view = new NodeView(node);
-            nodeViews.put(node.getId(), view);
-            nodeLayer.getChildren().add(view);
+            final NodeView nodeView = new NodeView(node);
+            nodeViews.put(node.getId(), nodeView);
+            nodeLayer.getChildren().add(nodeView);
         }
 
         for (Edge edge : graph.getEdges()) {
-            EdgeView view = new EdgeView(edge);
-            edgeLayer.getChildren().add(view);
-            updateEdgePosition(view);
+            final EdgeView edgeView = new EdgeView(edge);
+            edgeLayer.getChildren().add(edgeView);
+            updateEdgePosition(edgeView);
         }
         getChildren().addAll(edgeLayer, nodeLayer);
     }
 
     private void updateEdgePosition(EdgeView edgeView) {
-        NodeView source = nodeViews.get(edgeView.getModel().getSourceNodeId());
-        NodeView target = nodeViews.get(edgeView.getModel().getTargetNodeId());
+        final NodeView source = nodeViews.get(edgeView.getModel().getSourceNodeId());
+        final NodeView target = nodeViews.get(edgeView.getModel().getTargetNodeId());
 
         if (source != null && target != null) {
             edgeView.update(source, target);
