@@ -23,10 +23,10 @@ public class EdgeView extends Group {
 
     public void update(NodeView source, NodeView target) {
         if (source != null && target != null) {
-            line.setStartX(source.getLayoutX());
-            line.setStartY(source.getLayoutY());
-            line.setEndX(target.getLayoutX());
-            line.setEndY(target.getLayoutY());
+            line.setStartX(source.getLayoutX() + (source.getShapeWidth() / 2));
+            line.setStartY(source.getLayoutY() + (source.getShapeHeight() / 2));
+            line.setEndX(target.getLayoutX() + (target.getShapeWidth() / 2));
+            line.setEndY(target.getLayoutY() + (target.getShapeHeight() / 2));
         }
     }
 }

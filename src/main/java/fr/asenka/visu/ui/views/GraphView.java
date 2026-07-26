@@ -12,7 +12,8 @@ public class GraphView extends Pane {
 
     private final Graph graph;
     private final Map<Long, NodeView> nodeViews = new HashMap<>();
-//    private final Map<Long, EdgeView> edgeViews = new HashMap<>();
+    private final Pane edgeLayer = new Pane();
+    private final Pane nodeLayer = new Pane();
 
     public GraphView(Graph graph) {
         this.graph = graph;
@@ -23,14 +24,15 @@ public class GraphView extends Pane {
         for (Node node : graph.getNodes()) {
             NodeView view = new NodeView(node);
             nodeViews.put(node.getId(), view);
-            getChildren().add(view);
+            nodeLayer.getChildren().add(view);
         }
 
         for (Edge edge : graph.getEdges()) {
             EdgeView view = new EdgeView(edge);
-            getChildren().add(view);
+            edgeLayer.getChildren().add(view);
             updateEdgePosition(view);
         }
+        getChildren().addAll(edgeLayer, nodeLayer);
     }
 
     private void updateEdgePosition(EdgeView edgeView) {
