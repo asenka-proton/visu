@@ -29,18 +29,17 @@ public class GraphView extends Pane {
 
         for (Edge edge : graph.getEdges()) {
             final EdgeView edgeView = new EdgeView(edge);
+
+            final NodeView source = nodeViews.get(edgeView.getSourceNodeId());
+            final NodeView target = nodeViews.get(edgeView.getTargetNodeId());
+
+            if (source != null && target != null) {
+                edgeView.update(source, target);
+                source.getListeners().add(() -> edgeView.update(source, target));
+                target.getListeners().add(() -> edgeView.update(source, target));
+            }
             edgeLayer.getChildren().add(edgeView);
-            updateEdgePosition(edgeView);
         }
         getChildren().addAll(edgeLayer, nodeLayer);
-    }
-
-    private void updateEdgePosition(EdgeView edgeView) {
-        final NodeView source = nodeViews.get(edgeView.getModel().getSourceNodeId());
-        final NodeView target = nodeViews.get(edgeView.getModel().getTargetNodeId());
-
-        if (source != null && target != null) {
-            edgeView.update(source, target);
-        }
     }
 }

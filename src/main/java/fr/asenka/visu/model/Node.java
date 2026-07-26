@@ -23,6 +23,10 @@ public class Node {
         return location.y();
     }
 
+    public void setLocation(double x, double y) {
+        setLocation(new Location(x, y));
+    }
+
     public double distance(Node other) {
         if (other == null) {
             throw new IllegalArgumentException("other node is null");

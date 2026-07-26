@@ -7,9 +7,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.net.URL;
-
-import static fr.asenka.visu.utils.JavaFXUtils.setCssStylesheet;
+import static fr.asenka.visu.utils.JavaFXUtils.setStylesheet;
 
 
 public class App extends Application {
@@ -30,7 +28,7 @@ public class App extends Application {
         final GraphView graphView = new GraphView(graph);
 
         final Scene scene = new Scene(graphView, 800, 600);
-        setCssStylesheet(scene, STYLESHEET);
+        setStylesheet(scene, STYLESHEET);
         primaryStage.setTitle("VISU");
         primaryStage.setScene(scene);
         primaryStage.show();

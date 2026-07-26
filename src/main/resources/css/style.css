@@ -3,17 +3,13 @@
 }
 
 .node-shape {
-    /* Couleur de fond (dynamique en Java, mais tu peux mettre une couleur par défaut ici) */
     -fx-background-color: #5d6d7e;
 
-    /* Bordure */
     -fx-stroke: white;
     -fx-stroke-width: 2;
+    -fx-arc-width: 20px;
+    -fx-arc-height: 20px;
 
-    /* Arrondi des coins (plus le chiffre est haut, plus c'est rond) */
-    -fx-Sell-radius: 15;
-
-    /* Ombre portée (type, couleur, rayon, décalage X, décalage Y) */
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 0);
 }
 
@@ -24,6 +20,13 @@
     -fx-font-weight: bold;
 }
 
-.edge {
+.edge-line {
     -fx-stroke: gray;
+}
+
+.edge-label {
+    -fx-font-family: "Arial";
+    -fx-font-size: 10px;
+    -fx-fill: black;
+    -fx-font-weight: bold;
 }
