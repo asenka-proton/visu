@@ -2,11 +2,14 @@ package fr.asenka.visu.model;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 @Builder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Node {
 
+    @EqualsAndHashCode.Include
     private Long id;
     private String label;
     private String content;

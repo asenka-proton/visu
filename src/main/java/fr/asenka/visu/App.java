@@ -21,9 +21,13 @@ public class App extends Application {
         final Node n1 = graph.createNode("a", 50, 50);
         final Node n2 = graph.createNode("b", 50, 200);
         final Node n3 = graph.createNode("c", 200, 200);
+        final Node n4 = graph.createNode("d", 200, 400);
 
-        graph.createEdge("", n1, n2);
-        graph.createEdge("", n2, n3);
+        graph.connect(n1, n2);
+        graph.connect(n2, n3);
+        graph.connect(n4, n1);
+        graph.connect(n4, n2);
+        graph.connect(n4, n3);
 
         final GraphView graphView = new GraphView(graph);
 

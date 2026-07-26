@@ -27,6 +27,10 @@ public class Graph {
         return node;
     }
 
+    public Edge connect(Node source, Node target) {
+        return createEdge(null, source.getId(), target.getId());
+    }
+
     public Edge createEdge(String label, Node source, Node target) {
         return createEdge(label, source.getId(), target.getId());
     }
