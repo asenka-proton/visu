@@ -1,25 +1,19 @@
-# Commandes de base pour le projet VISU
 
-# Compiler le projet
-build:
-    ./gradlew build
+build *args:
+    ./gradlew build {{ args }}
 
-# Lancer l'application
-run:
-    ./gradlew run
+build-no-cache *args:
+    ./gradlew --no-configuration-cache build {{ args }}
 
-run-st:
-    ./gradlew run --stacktrace
+run *args:
+    ./gradlew run {{ args }}
 
-# Nettoyer les fichiers de compilation
 clean:
     ./gradlew clean
 
-# Lancer les tests (si tu en as)
 test:
     ./gradlew test
 
-# Générer le Gradle Wrapper (si absent)
 setup:
     gradle wrapper
 

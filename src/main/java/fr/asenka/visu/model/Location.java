@@ -2,6 +2,8 @@ package fr.asenka.visu.model;
 
 public record Location(double x, double y) {
 
+    public static final Location ORIGIN = new Location(0d,0d);
+
     public double distance(double x, double y) {
         return Math.sqrt(distanceSq(x, y));
     }

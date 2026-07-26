@@ -8,13 +8,14 @@ import static fr.asenka.visu.utils.ColorUtils.BLACK;
 @Data
 @Builder
 public class Node {
-    private long id;
+
+    private Long id;
     private String label;
     private String content;
     @Builder.Default
     private String color = BLACK;
     @Builder.Default
-    private Location location = new Location(0d, 0d);
+    private Location location = Location.ORIGIN;
 
     public double x() {
         return location.x();
