@@ -1,5 +1,6 @@
 package fr.asenka.visu.model;
 
+import fr.asenka.visu.shared.Vector2D;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +17,7 @@ public class Node {
     @Builder.Default
     private String color = "#FFFFF";
     @Builder.Default
-    private Location location = Location.ORIGIN;
+    private Vector2D location = Vector2D.ORIGIN;
 
     public double x() {
         return location.x();
@@ -27,7 +28,7 @@ public class Node {
     }
 
     public void setLocation(double x, double y) {
-        setLocation(new Location(x, y));
+        setLocation(new Vector2D(x, y));
     }
 
     public double distance(Node other) {

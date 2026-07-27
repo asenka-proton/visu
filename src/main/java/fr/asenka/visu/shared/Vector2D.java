@@ -1,6 +1,5 @@
-package fr.asenka.visu.engine;
+package fr.asenka.visu.shared;
 
-import fr.asenka.visu.model.Location;
 import fr.asenka.visu.model.Node;
 
 public record Vector2D(double x, double y) {
@@ -9,10 +8,6 @@ public record Vector2D(double x, double y) {
 
     public Vector2D(Node node) {
         this(node.x(), node.y());
-    }
-
-    public Vector2D(Location location) {
-        this(location.x(), location.y());
     }
 
     public Vector2D add(Vector2D other) {
@@ -48,14 +43,14 @@ public record Vector2D(double x, double y) {
 
     public double distance(Vector2D other) {
         if (other == null) {
-            throw new IllegalArgumentException("other location is null");
+            throw new IllegalArgumentException("other vector is null");
         }
         return distance(other.x, other.y);
     }
 
     public double distanceSq(Vector2D other) {
         if (other == null) {
-            throw new IllegalArgumentException("other location is null");
+            throw new IllegalArgumentException("other vector is null");
         }
         return distanceSq(other.x, other.y);
     }

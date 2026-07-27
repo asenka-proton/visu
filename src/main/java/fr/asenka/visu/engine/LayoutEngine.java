@@ -3,7 +3,6 @@ package fr.asenka.visu.engine;
 import fr.asenka.visu.model.Graph;
 import fr.asenka.visu.model.Node;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +12,16 @@ public class LayoutEngine {
     private final double damping = 0.9;
 
     public LayoutEngine() {
-        forces.add(new RepulsionForce(100.0, 20.0));
-        forces.add(new AttractionForce(0.1, 100.0));
+        this(
+                new RepulsionForce(100.0, 20.0),
+                new AttractionForce(0.1, 100.0)
+        );
     }
+
+    public LayoutEngine(Force... forces) {
+        this.forces.addAll(List.of(forces));
+    }
+
 
     public void update(Graph graph) {
 

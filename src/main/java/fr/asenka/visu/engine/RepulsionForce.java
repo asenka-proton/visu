@@ -1,11 +1,9 @@
 package fr.asenka.visu.engine;
 
 import fr.asenka.visu.model.Graph;
-import fr.asenka.visu.model.Location;
 import fr.asenka.visu.model.Node;
+import fr.asenka.visu.shared.Vector2D;
 import lombok.RequiredArgsConstructor;
-
-import java.beans.VetoableChangeListener;
 
 @RequiredArgsConstructor
 public class RepulsionForce implements Force {
@@ -43,6 +41,6 @@ public class RepulsionForce implements Force {
     private void updateNodeLocation(Node node, Vector2D force) {
         double newX = node.getLocation().x() + force.x();
         double newY = node.getLocation().y() + force.y();
-        node.setLocation(new Location(newX, newY));
+        node.setLocation(newX, newY);
     }
 }

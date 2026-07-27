@@ -2,8 +2,8 @@ package fr.asenka.visu.engine;
 
 import fr.asenka.visu.model.Edge;
 import fr.asenka.visu.model.Graph;
-import fr.asenka.visu.model.Location;
 import fr.asenka.visu.model.Node;
+import fr.asenka.visu.shared.Vector2D;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

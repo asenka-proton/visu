@@ -1,5 +1,6 @@
 package fr.asenka.visu.model;
 
+import fr.asenka.visu.shared.Vector2D;
 import fr.asenka.visu.utils.GraphUtils;
 
 import java.util.Collection;
@@ -13,10 +14,10 @@ public class Graph {
     private final Map<Long, Edge> edges = new HashMap<>();
 
     public Node createNode(String label, double x, double y) {
-        return createNode(label, new Location(x, y));
+        return createNode(label, new Vector2D(x, y));
     }
 
-    public Node createNode(String label, Location location) {
+    public Node createNode(String label, Vector2D location) {
 
         final Node node = Node.builder()
                 .id(GraphUtils.getId(this))
@@ -114,5 +115,30 @@ public class Graph {
         if (edges.remove(id) == null) {
             throw new IllegalArgumentException("edge id not found: " + id);
         }
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder builder = new StringBuilder();
+
+        nodes.values().forEach(node -> {
+            builder.append("Node %s/%s : (%.2f, %.2f)%n".formatted(
+                    node.getId(),
+                    node.getLabel(),
+                    node.getLocation().x(),
+                    node.getLocation().y())
+            );
+        });
+        edges.values().forEach(edge -> {
+            final var source = nodes.get(edge.getSourceNodeId());
+            final var target = nodes.get(edge.getTargetNodeId());
+
+            builder.append("%s --- %.2f ---> %s%n".formatted(
+                    source.getId(),
+                    source.distance(target),
+                    target.getId()
+            ));
+        });
+        return builder.toString();
     }
 }
