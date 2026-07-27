@@ -16,31 +16,25 @@ public class RepulsionForce implements Force {
 
         for (Node a : graph.getNodes()) {
 
-            Vector2D totalForce = Vector2D.ORIGIN;
+            Vector2D acceleration = Vector2D.ORIGIN;
 
             for (Node b : graph.getNodes()) {
 
                 if (a.equals(b)) continue;
 
-                final Vector2D posA = new Vector2D(a);
-                final Vector2D posB = new Vector2D(b);
+                final Vector2D locationA = a.getLocation();
+                final Vector2D locationB = b.getLocation();
 
-                final Vector2D direction = posA.subtract(posB);
+                final Vector2D direction = locationA.subtract(locationB);
                 final double distance = Math.max(direction.magnitude(), minDistance);
                 final double magnitude = strength / (distance * distance);
 
-                totalForce = totalForce.add(direction
+                acceleration = acceleration.add(direction
                         .normalize()
                         .multiply(magnitude)
                 );
             }
-            updateNodeLocation(a, totalForce);
+            a.addVelocity(acceleration);
         }
-    }
-
-    private void updateNodeLocation(Node node, Vector2D force) {
-        double newX = node.getLocation().x() + force.x();
-        double newY = node.getLocation().y() + force.y();
-        node.setLocation(newX, newY);
     }
 }

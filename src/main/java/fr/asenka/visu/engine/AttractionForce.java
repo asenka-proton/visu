@@ -28,17 +28,11 @@ public class AttractionForce implements Force {
 
             if (currentDistance > 0) {
                 final double magnitude = (currentDistance - restLength) * strength;
-                final Vector2D force = direction.normalize().multiply(magnitude);
+                final Vector2D acceleration = direction.normalize().multiply(magnitude);
 
-                updateNodePosition(source, force.multiply(-0.5));
-                updateNodePosition(target, force.multiply(0.5));
+                source.addVelocity(acceleration.multiply(-0.5));
+                target.addVelocity(acceleration.multiply(0.5));
             }
         }
-    }
-
-    private void updateNodePosition(Node node, Vector2D force) {
-        final double newX = node.x() + force.x();
-        final double newY = node.y() + force.y();
-        node.setLocation(newX, newY);
     }
 }

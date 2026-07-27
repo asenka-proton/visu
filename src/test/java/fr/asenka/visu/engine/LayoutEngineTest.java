@@ -12,7 +12,7 @@ class LayoutEngineTest {
     private static final double EXPECTED_DISTANCE_BETWEEN_NODES = 100.0;
 
     @Test
-    void update() {
+    void update_simple_3nodes_graph() {
 
         final Graph graph = new Graph();
 
@@ -24,8 +24,9 @@ class LayoutEngineTest {
         graph.connect(n2, n3);
 
         final LayoutEngine engine = new LayoutEngine(
-                new RepulsionForce(EXPECTED_DISTANCE_BETWEEN_NODES, 20.0),
-                new AttractionForce(0.1, 100.0)
+                LayoutEngine.DAMPING,
+                new RepulsionForce(100.0, 20.0),
+                new AttractionForce(0.1, EXPECTED_DISTANCE_BETWEEN_NODES)
         );
 
         System.out.println("Start simulation...");
@@ -44,5 +45,12 @@ class LayoutEngineTest {
         assertThat(graph.getEdges()).allSatisfy(edge -> {
             assertThat(edge.length(graph)).isCloseTo(EXPECTED_DISTANCE_BETWEEN_NODES, Offset.offset(0.4));
         });
+    }
+
+    @Test
+    void update_star_graph() {
+
+        Graph graph = new Graph();
+
     }
 }

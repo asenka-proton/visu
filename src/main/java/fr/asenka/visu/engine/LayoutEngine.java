@@ -2,23 +2,26 @@ package fr.asenka.visu.engine;
 
 import fr.asenka.visu.model.Graph;
 import fr.asenka.visu.model.Node;
+import fr.asenka.visu.shared.Vector2D;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LayoutEngine {
 
+    public static final Force REPULSION_FORCE = new RepulsionForce(100.0, 20.0);
+    public static final Force ATTRACTION_FORCE = new AttractionForce(0.1, 100.0);
+    public static final double DAMPING = 0.9;
+
     private final List<Force> forces = new ArrayList<>();
-    private final double damping = 0.9;
+    private final double damping;
 
     public LayoutEngine() {
-        this(
-                new RepulsionForce(100.0, 20.0),
-                new AttractionForce(0.1, 100.0)
-        );
+        this(DAMPING, REPULSION_FORCE, ATTRACTION_FORCE);
     }
 
-    public LayoutEngine(Force... forces) {
+    public LayoutEngine(double damping, Force... forces) {
+        this.damping = damping;
         this.forces.addAll(List.of(forces));
     }
 
@@ -30,11 +33,14 @@ public class LayoutEngine {
         }
 
         for (Node node : graph.getNodes()) {
-            double newX = node.x() * damping;
-            double newY = node.y() * damping;
-            // Note: Le damping est souvent appliqué sur la VELOCITY.
-            // Ici, pour simplifier, on réduit la position relative.
-            // Une approche plus précise serait de stocker une vitesse (vx, vy) par nœud.
+
+            Vector2D currentVelocity = node.getVelocity().multiply(damping);
+            node.setVelocity(currentVelocity);
+
+            double newX = node.x() + currentVelocity.x();
+            double newY = node.y() + currentVelocity.y();
+
+            node.setLocation(newX, newY);
         }
     }
 }

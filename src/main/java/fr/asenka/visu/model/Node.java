@@ -18,6 +18,8 @@ public class Node {
     private String color = "#FFFFF";
     @Builder.Default
     private Vector2D location = Vector2D.ORIGIN;
+    @Builder.Default
+    private Vector2D velocity = Vector2D.ORIGIN;
 
     public double x() {
         return location.x();
@@ -43,5 +45,9 @@ public class Node {
             throw new IllegalArgumentException("other node is null");
         }
         return location.distanceSq(other.location);
+    }
+
+    public void addVelocity(Vector2D acceleration) {
+        velocity = velocity.add(acceleration);
     }
 }
