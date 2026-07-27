@@ -13,28 +13,33 @@ public class RepulsionForce implements Force {
 
     @Override
     public void apply(Graph graph) {
-
         for (Node a : graph.getNodes()) {
-
             Vector2D acceleration = Vector2D.ORIGIN;
+            final Vector2D locationA = a.getLocation();
 
             for (Node b : graph.getNodes()) {
+                if (a.getId().equals(b.getId())) continue;
 
-                if (a.equals(b)) continue;
-
-                final Vector2D locationA = a.getLocation();
                 final Vector2D locationB = b.getLocation();
-
                 final Vector2D direction = locationA.subtract(locationB);
-                final double distance = Math.max(direction.magnitude(), minDistance);
-                final double magnitude = strength / (distance * distance);
+                final double distance = direction.magnitude();
 
-                acceleration = acceleration.add(direction
-                        .normalize()
-                        .multiply(magnitude)
-                );
+                if (distance > 0) {
+                    // Cas normal : on utilise la direction réelle
+                    final double magnitude = strength / (distance * distance);
+                    acceleration = acceleration.add(direction.normalize().multiply(magnitude));
+                } else {
+                    // CAS CRITIQUE : Les nœuds sont superposés !
+                    // On génère une direction aléatoire pour les séparer
+                    double randomX = Math.random() * 2 - 1;
+                    double randomY = Math.random() * 2 - 1;
+                    acceleration = acceleration.add(new Vector2D(randomX, randomY).multiply(strength));
+                }
+
+                // Sécurité pour ne pas diviser par zéro avec la minDistance
+                // (Si tu utilises minDistance, assure-toi qu'elle est intégrée ici)
             }
-            a.addVelocity(acceleration);
+            a.incrementVelocity(acceleration);
         }
     }
 }

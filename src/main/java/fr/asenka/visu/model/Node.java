@@ -47,7 +47,7 @@ public class Node {
         return location.distanceSq(other.location);
     }
 
-    public void addVelocity(Vector2D acceleration) {
+    public void incrementVelocity(Vector2D acceleration) {
         velocity = velocity.add(acceleration);
     }
 }

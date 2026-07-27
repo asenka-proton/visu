@@ -22,9 +22,9 @@ tasks.test {
 }
 
 dependencies {
-    implementation("org.openjfx:javafx-controls:21")
-    implementation("org.openjfx:javafx-graphics:21")
-    implementation("org.openjfx:javafx-fxml:21")
+    implementation("org.openjfx:javafx-controls:21.0.2")
+    implementation("org.openjfx:javafx-graphics:21.0.2")
+    implementation("org.openjfx:javafx-fxml:21.0.2")
 
     compileOnly("org.projectlombok:lombok:${project.property("version-lombok")}")
 
