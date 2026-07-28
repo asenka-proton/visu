@@ -4,30 +4,37 @@ import fr.asenka.visu.engine.LayoutEngine;
 import fr.asenka.visu.model.Edge;
 import fr.asenka.visu.model.Graph;
 import fr.asenka.visu.model.Node;
+import jakarta.annotation.PostConstruct;
 import javafx.animation.AnimationTimer;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class GraphView extends Pane {
 
-    private final Graph graph;
     private final Map<Long, NodeView> nodeViews = new HashMap<>();
     private final Map<Long, EdgeView> edgeViews = new HashMap<>();
     private final Pane edgeLayer = new Pane();
     private final Pane nodeLayer = new Pane();
-    private final LayoutEngine engine = new LayoutEngine();
+
+    private final Graph graph;
+    private final LayoutEngine engine;
 
     private boolean layoutActive = false;
 
-    public GraphView(Graph graph) {
+    public GraphView(Graph graph, LayoutEngine engine) {
         this.graph = graph;
+        this.engine = engine;
         render();
-//        setOnKeyPressed(this::onKeyPressed);
+    }
+
+    public void startTimer() {
         createAnimatedTimerLayout().start();
     }
 

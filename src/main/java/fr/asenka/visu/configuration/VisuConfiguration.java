@@ -1,29 +1,38 @@
-package fr.asenka.visu;
+package fr.asenka.visu.configuration;
 
 import fr.asenka.visu.engine.LayoutEngine;
+import fr.asenka.visu.engine.configuration.EngineConfiguration;
 import fr.asenka.visu.model.Graph;
 import fr.asenka.visu.model.Node;
 import fr.asenka.visu.ui.views.GraphView;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.stage.Stage;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static fr.asenka.visu.utils.JavaFXUtils.setStylesheet;
+@Configuration
+@EnableConfigurationProperties(VisuProperties.class)
+@Import({
+        EngineConfiguration.class
+})
+public class VisuConfiguration {
+
+    @Bean
+    public GraphView graphView(LayoutEngine layoutEngine) {
+        final Graph graph = testGraph();
+
+        return new
+                GraphView(graph, layoutEngine);
+    }
 
 
-public class App extends Application {
+    private static Graph testGraph() {
 
-    private static final String STYLESHEET = "/css/style.css";
-
-    private final Graph graph = new Graph();
-
-    @Override
-    public void start(Stage primaryStage) {
+        final Graph graph = new Graph();
 
         // 1. Configuration des paramètres
         int nodeCount = 35;           // Nombre de nœuds
@@ -52,29 +61,6 @@ public class App extends Application {
                 graph.connect(nodes.get(index1), nodes.get(index2));
             }
         }
-
-        final GraphView graphView = new GraphView(graph);
-
-        final Scene scene = new Scene(graphView, 800, 600);
-
-        scene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.CONTROL) {
-                graphView.toggleLayout();
-            }
-        });
-        scene.setOnKeyReleased(event -> {
-            if (event.getCode() == KeyCode.CONTROL) {
-                graphView.toggleLayout();
-            }
-        });
-
-        setStylesheet(scene, STYLESHEET);
-        primaryStage.setTitle("VISU");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
+        return graph;
     }
 }

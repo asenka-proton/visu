@@ -1,7 +1,6 @@
 package fr.asenka.visu.model;
 
 import fr.asenka.visu.shared.Vector2D;
-import fr.asenka.visu.utils.GraphUtils;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -9,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Graph {
+
+    private static long idCount = 1L;
 
     private final Map<Long, Node> nodes = new HashMap<>();
     private final Map<Long, Edge> edges = new HashMap<>();
@@ -20,7 +21,7 @@ public class Graph {
     public Node createNode(String label, Vector2D location) {
 
         final Node node = Node.builder()
-                .id(GraphUtils.getId(this))
+                .id(nextId())
                 .label(label)
                 .location(location)
                 .build();
@@ -38,7 +39,7 @@ public class Graph {
 
     public Edge createEdge(String label, long sourceId, long targetId) {
         final Edge edge = Edge.builder()
-                .id(GraphUtils.getId(this))
+                .id(nextId())
                 .label(label)
                 .sourceNodeId(sourceId)
                 .targetNodeId(targetId)
@@ -140,5 +141,14 @@ public class Graph {
             ));
         });
         return builder.toString();
+    }
+
+    public long nextId() {
+
+        long id;
+        do {
+            id = idCount++;
+        } while (contains(id));
+        return id;
     }
 }

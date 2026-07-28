@@ -18,7 +18,7 @@ setup:
     gradle wrapper
 
 bundle-sources output-file="project-visu-sources.txt":
-    find . -type f \( -name "*.java" -o -name "*.kts" -o -name "*.properties" \) \
+    find . -type f \( -name "*.java" -o -name "*.kts" -o -name "*.properties" -o -name "*.css" \) \
         ! -path "*/target/*" \
         ! -path "*/build/*" \
         ! -path "*/.git/*" \

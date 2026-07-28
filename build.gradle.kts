@@ -7,11 +7,16 @@ plugins {
 }
 
 application {
-    mainClass.set("fr.asenka.visu.App")
+    mainClass.set("fr.asenka.visu.Main")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 javafx {
-    version = "${project.property("version-javafx")}"
+    version = "21.0.2"
     modules("javafx.controls", "javafx.graphics", "javafx.fxml")
 }
 
@@ -25,18 +30,18 @@ tasks.test {
 
 dependencies {
 
-    implementation("org.springframework.boot:spring-boot-starter:${project.property("version-spring-boot")}")
+    implementation("org.springframework.boot:spring-boot-starter")
 
-    implementation("org.openjfx:javafx-controls:${project.property("version-javafx")}")
-    implementation("org.openjfx:javafx-graphics:${project.property("version-javafx")}")
-    implementation("org.openjfx:javafx-fxml:${project.property("version-javafx")}")
+    implementation("org.openjfx:javafx-controls")
+    implementation("org.openjfx:javafx-graphics")
+    implementation("org.openjfx:javafx-fxml")
 
-    testImplementation("org.assertj:assertj-core:${project.property("version-assertj")}")
+    testImplementation("org.assertj:assertj-core")
 
-    testImplementation("org.junit.jupiter:junit-jupiter:${project.property("version-junit")}")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:${project.property("version-junit")}")
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    compileOnly("org.projectlombok:lombok:${project.property("version-lombok")}")
-    annotationProcessor("org.projectlombok:lombok:${project.property("version-lombok")}")
+    compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
 }
 

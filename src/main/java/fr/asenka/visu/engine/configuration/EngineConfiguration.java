@@ -1,0 +1,56 @@
+package fr.asenka.visu.engine.configuration;
+
+import fr.asenka.visu.configuration.VisuProperties;
+import fr.asenka.visu.engine.AttractionForce;
+import fr.asenka.visu.engine.GravityForce;
+import fr.asenka.visu.engine.LayoutEngine;
+import fr.asenka.visu.engine.RepulsionForce;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@RequiredArgsConstructor
+public class EngineConfiguration {
+
+    private final VisuProperties properties;
+
+    @Bean
+    public RepulsionForce repulsionForce() {
+        return new RepulsionForce(
+                properties.getEngine().getForces().getRepulsion().getStrength(),
+                properties.getEngine().getForces().getRepulsion().getMinDistance()
+        );
+    }
+
+    @Bean
+    public AttractionForce attractionForce() {
+        return new AttractionForce(
+                properties.getEngine().getForces().getAttraction().getStrength(),
+                properties.getEngine().getForces().getAttraction().getRestLength()
+        );
+    }
+
+    @Bean
+    public GravityForce gravityForce() {
+        return new GravityForce(
+                new fr.asenka.visu.shared.Vector2D(
+                        properties.getEngine().getForces().getGravity().getCenterX(),
+                        properties.getEngine().getForces().getGravity().getCenterY()
+                ),
+                properties.getEngine().getForces().getGravity().getStrength()
+        );
+    }
+
+    @Bean
+    public LayoutEngine layoutEngine(RepulsionForce repulsion,
+                                     AttractionForce attraction,
+                                     GravityForce gravity) {
+        return new LayoutEngine(
+                properties.getEngine().getLayout().getDamping(),
+                repulsion,
+                attraction,
+                gravity
+        );
+    }
+}
