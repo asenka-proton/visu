@@ -1,7 +1,6 @@
 package fr.asenka.visu.model;
 
 import fr.asenka.visu.shared.Vector2D;
-import fr.asenka.visu.utils.GraphUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

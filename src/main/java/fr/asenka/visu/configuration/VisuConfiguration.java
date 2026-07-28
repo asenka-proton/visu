@@ -22,15 +22,13 @@ import java.util.Random;
 public class VisuConfiguration {
 
     @Bean
-    public GraphView graphView(LayoutEngine layoutEngine) {
-        final Graph graph = testGraph();
-
-        return new
-                GraphView(graph, layoutEngine);
+    public GraphView graphView(Graph graph, LayoutEngine layoutEngine) {
+          return new GraphView(graph, layoutEngine);
     }
 
 
-    private static Graph testGraph() {
+    @Bean
+    public Graph testGraph() {
 
         final Graph graph = new Graph();
 

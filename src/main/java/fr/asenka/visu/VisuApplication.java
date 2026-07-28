@@ -1,5 +1,6 @@
 package fr.asenka.visu;
 
+import fr.asenka.visu.configuration.SpringContext;
 import fr.asenka.visu.configuration.VisuProperties;
 import fr.asenka.visu.ui.views.GraphView;
 import javafx.application.Application;
@@ -16,8 +17,8 @@ public class VisuApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        properties = Main.getBean(VisuProperties.class);
-        graphView = Main.getBean(GraphView.class);
+        properties = SpringContext.getBean(VisuProperties.class);
+        graphView = SpringContext.getBean(GraphView.class);
 
         final Scene scene = new Scene(
                 graphView,
