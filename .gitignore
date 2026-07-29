@@ -36,3 +36,6 @@ Thumbs.db
 *.secrets
 *.pem
 
+# --- Other ---
+summary*.txt
+bundle-sources*.txt

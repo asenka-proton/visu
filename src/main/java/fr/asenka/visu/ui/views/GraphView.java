@@ -4,13 +4,9 @@ import fr.asenka.visu.engine.LayoutEngine;
 import fr.asenka.visu.model.Edge;
 import fr.asenka.visu.model.Graph;
 import fr.asenka.visu.model.Node;
-import jakarta.annotation.PostConstruct;
 import javafx.animation.AnimationTimer;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,15 +22,16 @@ public class GraphView extends Pane {
     private final Graph graph;
     private final LayoutEngine engine;
 
-    private boolean layoutActive = false;
+    @Setter
+    private boolean layoutEngineActive = false;
 
     public GraphView(Graph graph, LayoutEngine engine) {
         this.graph = graph;
         this.engine = engine;
-        render();
     }
 
-    public void startTimer() {
+    public void initialize() {
+        render();
         createAnimatedTimerLayout().start();
     }
 
@@ -62,18 +59,13 @@ public class GraphView extends Pane {
         getChildren().addAll(edgeLayer, nodeLayer);
     }
 
-
-    public void toggleLayout() {
-        layoutActive = !layoutActive;
-    }
-
     private AnimationTimer createAnimatedTimerLayout() {
         return new AnimationTimer() {
 
             @Override
             public void handle(long now) {
 
-                if (layoutActive) {
+                if (layoutEngineActive) {
                     engine.update(graph);
                 }
 

@@ -5,6 +5,7 @@ import fr.asenka.visu.engine.AttractionForce;
 import fr.asenka.visu.engine.GravityForce;
 import fr.asenka.visu.engine.LayoutEngine;
 import fr.asenka.visu.engine.RepulsionForce;
+import fr.asenka.visu.shared.Vector2D;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,11 +34,13 @@ public class EngineConfiguration {
 
     @Bean
     public GravityForce gravityForce() {
+
+        final Vector2D gravityCenter = new Vector2D(
+                properties.getUi().getWidth() / 2,
+                properties.getUi().getHeight() / 2
+        );
         return new GravityForce(
-                new fr.asenka.visu.shared.Vector2D(
-                        properties.getEngine().getForces().getGravity().getCenterX(),
-                        properties.getEngine().getForces().getGravity().getCenterY()
-                ),
+                gravityCenter,
                 properties.getEngine().getForces().getGravity().getStrength()
         );
     }

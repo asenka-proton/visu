@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import org.jspecify.annotations.NonNull;
 
 
 public class VisuApplication extends Application {
@@ -20,6 +21,18 @@ public class VisuApplication extends Application {
         properties = SpringContext.getBean(VisuProperties.class);
         graphView = SpringContext.getBean(GraphView.class);
 
+        final Scene scene = createScene();
+
+        graphView.initialize();
+
+        scene.getStylesheets().add(properties.getUi().getStylesheet());
+
+        primaryStage.setTitle(properties.getUi().getTitle());
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    private @NonNull Scene createScene() {
         final Scene scene = new Scene(
                 graphView,
                 properties.getUi().getWidth(),
@@ -28,21 +41,14 @@ public class VisuApplication extends Application {
 
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.CONTROL) {
-                graphView.toggleLayout();
+                graphView.setLayoutEngineActive(true);
             }
         });
         scene.setOnKeyReleased(event -> {
             if (event.getCode() == KeyCode.CONTROL) {
-                graphView.toggleLayout();
+                graphView.setLayoutEngineActive(false);
             }
         });
-
-        graphView.startTimer();
-
-        scene.getStylesheets().add(properties.getUi().getStylesheet());
-
-        primaryStage.setTitle(properties.getUi().getTitle());
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        return scene;
     }
 }
