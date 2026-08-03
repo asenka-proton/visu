@@ -28,7 +28,7 @@ bundle-sources output-file="bundle-sources.txt":
         ! -path "*/.run/*" \
         | xargs -I {} sh -c 'echo "--- FILE: {} ---"; cat {}; echo ""' > {{ output-file }}
 
-summarize-ia input-file="project-visu-sources.txt" output-file="summary-ia.txt":
+summarize-ia input-file="bundle-sources.txt" output-file="summary-ia.txt":
     jq -n --arg prompt "Fais un résumé détaillé de ce fichier sources. Explique ce qui est déjà fait mais ne parle pas de ce qui reste à faire" --arg content "$(cat {{ input-file }})" \
     '{ \
       model: "default", \

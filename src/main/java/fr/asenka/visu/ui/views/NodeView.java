@@ -1,6 +1,7 @@
 package fr.asenka.visu.ui.views;
 
 import fr.asenka.visu.model.Node;
+import javafx.scene.Group;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
@@ -13,6 +14,7 @@ import java.util.List;
 
 public class NodeView extends StackPane {
 
+    private final Group parentGroup;
     @Getter
     private final Node model;
     private final Rectangle shape;
@@ -24,8 +26,9 @@ public class NodeView extends StackPane {
     private double mouseStartX, mouseStartY;
 
 
-    public NodeView(Node model) {
+    public NodeView(Node model, Group parentGroup) {
         this.model = model;
+        this.parentGroup = parentGroup;
         this.getStyleClass().add("node-container");
 
         shape = new Rectangle(50, 50);
@@ -76,18 +79,17 @@ public class NodeView extends StackPane {
             clickedX = this.model.x();
             clickedY = this.model.y();
 
-            mouseStartX = event.getSceneX();
-            mouseStartY = event.getSceneY();
+            mouseStartX = event.getSceneX() - parentGroup.getTranslateX();
+            mouseStartY = event.getSceneY() - parentGroup.getTranslateY();
         }
     }
 
     private void onMouseDragged(MouseEvent event) {
 
-        final double deltaX = event.getSceneX() - mouseStartX;
-        final double deltaY = event.getSceneY() - mouseStartY;
+        final double deltaX = (event.getSceneX() - mouseStartX) - parentGroup.getTranslateX();
+        final double deltaY = (event.getSceneY() - mouseStartY) - parentGroup.getTranslateY();
 
         model.setLocation(clickedX + deltaX, clickedY + deltaY);
-
         update();
     }
 }

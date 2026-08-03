@@ -5,22 +5,31 @@ import fr.asenka.visu.model.Edge;
 import fr.asenka.visu.model.Graph;
 import fr.asenka.visu.model.Node;
 import javafx.animation.AnimationTimer;
+import javafx.scene.Group;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static fr.asenka.visu.ui.JavaFXUtils.targetNodeIs;
+
 
 public class GraphView extends Pane {
 
     private final Map<Long, NodeView> nodeViews = new HashMap<>();
     private final Map<Long, EdgeView> edgeViews = new HashMap<>();
+    private final Group contentGroup = new Group();
     private final Pane edgeLayer = new Pane();
     private final Pane nodeLayer = new Pane();
 
     private final Graph graph;
     private final LayoutEngine engine;
+
+    private boolean moving;
+    private double mouseX, mouseY;
+    private double initialTranslateX, initialTranslateY;
 
     @Setter
     private boolean layoutEngineActive = false;
@@ -37,7 +46,7 @@ public class GraphView extends Pane {
 
     private void render() {
         for (Node node : graph.getNodes()) {
-            final NodeView nodeView = new NodeView(node);
+            final NodeView nodeView = new NodeView(node, contentGroup);
             nodeViews.put(node.getId(), nodeView);
             nodeLayer.getChildren().add(nodeView);
         }
@@ -56,7 +65,48 @@ public class GraphView extends Pane {
             edgeViews.put(edge.getId(), edgeView);
             edgeLayer.getChildren().add(edgeView);
         }
-        getChildren().addAll(edgeLayer, nodeLayer);
+
+        setOnMousePressed(this::onMousePressed);
+        setOnMouseDragged(this::onMouseDragged);
+        setOnMouseReleased(this::onMouseReleased);
+        contentGroup.getChildren().addAll(edgeLayer, nodeLayer);
+
+        getChildren().addAll(contentGroup);
+    }
+
+    private void onMousePressed(MouseEvent mouseEvent) {
+
+        if (targetNodeIs(mouseEvent, NodeView.class)) {
+            return;
+        }
+        moving = true;
+        mouseX = mouseEvent.getSceneX();
+        mouseY = mouseEvent.getSceneY();
+        initialTranslateX = contentGroup.getTranslateX();
+        initialTranslateY = contentGroup.getTranslateY();
+        System.out.println("Mouvement activé : " + initialTranslateX + ", " + initialTranslateY);
+    }
+
+    private void onMouseDragged(MouseEvent mouseEvent) {
+
+        if (!moving) {
+            System.out.println("Drag ignoré car moving = false");
+            return;
+        }
+
+        final double deltaX = mouseEvent.getSceneX() - mouseX;
+        final double deltaY = mouseEvent.getSceneY() - mouseY;
+
+        contentGroup.setTranslateX(initialTranslateX + deltaX);
+        contentGroup.setTranslateY(initialTranslateY + deltaY);
+    }
+
+    private void onMouseReleased(MouseEvent mouseEvent) {
+        mouseX = 0;
+        mouseY = 0;
+        initialTranslateX = 0;
+        initialTranslateY = 0;
+        moving = false;
     }
 
     private AnimationTimer createAnimatedTimerLayout() {
