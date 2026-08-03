@@ -14,7 +14,7 @@ import java.util.List;
 
 public class NodeView extends StackPane {
 
-    private final Group parentGroup;
+    private final Group parent;
     @Getter
     private final Node model;
     private final Rectangle shape;
@@ -26,9 +26,9 @@ public class NodeView extends StackPane {
     private double mouseStartX, mouseStartY;
 
 
-    public NodeView(Node model, Group parentGroup) {
+    public NodeView(Node model, Group parent) {
         this.model = model;
-        this.parentGroup = parentGroup;
+        this.parent = parent;
         this.getStyleClass().add("node-container");
 
         shape = new Rectangle(50, 50);
@@ -46,32 +46,10 @@ public class NodeView extends StackPane {
     }
 
     public void update() {
-        double x = model.x() - (shape.getWidth() / 2);
-        double y = model.y() - (shape.getHeight() / 2);
-        relocate(x, y);
+        final double newX = model.x() - (shape.getWidth() / 2);
+        final double newY = model.y() - (shape.getHeight() / 2);
+        relocate(newX, newY);
         listeners.forEach(Runnable::run);
-    }
-
-    public double getShapeWidth() {
-        return shape.getWidth();
-    }
-
-    public double getShapeHeight() {
-        return shape.getHeight();
-    }
-
-    public double distance(NodeView other) {
-        if (other == null) {
-            throw new IllegalArgumentException("other node-view is null");
-        }
-        return model.distance(other.model);
-    }
-
-    public double distanceSq(NodeView other) {
-        if (other == null) {
-            throw new IllegalArgumentException("other node-view is null");
-        }
-        return model.distanceSq(other.model);
     }
 
     private void onMouseClicked(MouseEvent event) {
@@ -79,17 +57,26 @@ public class NodeView extends StackPane {
             clickedX = this.model.x();
             clickedY = this.model.y();
 
-            mouseStartX = event.getSceneX() - parentGroup.getTranslateX();
-            mouseStartY = event.getSceneY() - parentGroup.getTranslateY();
+            mouseStartX = event.getSceneX() - parent.getTranslateX();
+            mouseStartY = event.getSceneY() - parent.getTranslateY();
         }
     }
 
     private void onMouseDragged(MouseEvent event) {
 
-        final double deltaX = (event.getSceneX() - mouseStartX) - parentGroup.getTranslateX();
-        final double deltaY = (event.getSceneY() - mouseStartY) - parentGroup.getTranslateY();
+        final double deltaX = (event.getSceneX() - mouseStartX) - parent.getTranslateX();
+        final double deltaY = (event.getSceneY() - mouseStartY) - parent.getTranslateY();
 
         model.setLocation(clickedX + deltaX, clickedY + deltaY);
         update();
+    }
+
+
+    public double getShapeWidth() {
+        return shape.getWidth();
+    }
+
+    public double getShapeHeight() {
+        return shape.getHeight();
     }
 }

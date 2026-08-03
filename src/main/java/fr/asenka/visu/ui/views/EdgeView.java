@@ -8,29 +8,23 @@ import lombok.Getter;
 
 public class EdgeView extends Group {
 
+    private final Line line = new Line();
+    private final Text label = new Text("");
+
     @Getter
     private final Edge model;
-    private final Line line;
-    private final Text label;
 
     public EdgeView(Edge model) {
         this.model = model;
+        render();
+    }
 
-        line = new Line();
+    private void render() {
         line.getStyleClass().add("edge-line");
         getChildren().add(line);
 
-        label = new Text("");
         label.getStyleClass().add("edge-label");
         getChildren().add(label);
-    }
-
-    public long getSourceNodeId() {
-        return model.getSourceNodeId();
-    }
-
-    public long getTargetNodeId() {
-        return model.getTargetNodeId();
     }
 
     public void update(NodeView source, NodeView target) {
@@ -50,6 +44,14 @@ public class EdgeView extends Group {
         final double midY = (startY + endY) / 2;
         label.setLayoutX(midX - (label.getBoundsInLocal().getWidth() / 2));
         label.setLayoutY(midY - (label.getBoundsInLocal().getHeight() / 2));
-        label.setText(String.format("%.2f", source.distance(target)));
+        label.setText(String.format("%.2f", source.getModel().distance(target.getModel())));
+    }
+
+    public long getSourceNodeId() {
+        return model.getSourceNodeId();
+    }
+
+    public long getTargetNodeId() {
+        return model.getTargetNodeId();
     }
 }

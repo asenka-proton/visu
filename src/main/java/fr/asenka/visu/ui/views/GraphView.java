@@ -45,6 +45,15 @@ public class GraphView extends Pane {
     }
 
     private void render() {
+
+        renderGraph();
+
+        setOnMousePressed(this::onMousePressed);
+        setOnMouseDragged(this::onMouseDragged);
+        setOnMouseReleased(this::onMouseReleased);
+    }
+
+    private void renderGraph() {
         for (Node node : graph.getNodes()) {
             final NodeView nodeView = new NodeView(node, contentGroup);
             nodeViews.put(node.getId(), nodeView);
@@ -65,10 +74,6 @@ public class GraphView extends Pane {
             edgeViews.put(edge.getId(), edgeView);
             edgeLayer.getChildren().add(edgeView);
         }
-
-        setOnMousePressed(this::onMousePressed);
-        setOnMouseDragged(this::onMouseDragged);
-        setOnMouseReleased(this::onMouseReleased);
         contentGroup.getChildren().addAll(edgeLayer, nodeLayer);
 
         getChildren().addAll(contentGroup);
@@ -77,6 +82,7 @@ public class GraphView extends Pane {
     private void onMousePressed(MouseEvent mouseEvent) {
 
         if (targetNodeIs(mouseEvent, NodeView.class)) {
+            // Si on a cliqué sur un NodeView, on ignore le déplacement
             return;
         }
         moving = true;
@@ -84,16 +90,13 @@ public class GraphView extends Pane {
         mouseY = mouseEvent.getSceneY();
         initialTranslateX = contentGroup.getTranslateX();
         initialTranslateY = contentGroup.getTranslateY();
-        System.out.println("Mouvement activé : " + initialTranslateX + ", " + initialTranslateY);
     }
 
     private void onMouseDragged(MouseEvent mouseEvent) {
 
         if (!moving) {
-            System.out.println("Drag ignoré car moving = false");
             return;
         }
-
         final double deltaX = mouseEvent.getSceneX() - mouseX;
         final double deltaY = mouseEvent.getSceneY() - mouseY;
 
