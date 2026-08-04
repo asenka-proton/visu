@@ -35,9 +35,6 @@ public class RepulsionForce implements Force {
                     double randomY = Math.random() * 2 - 1;
                     acceleration = acceleration.add(new Vector2D(randomX, randomY).multiply(strength));
                 }
-
-                // Sécurité pour ne pas diviser par zéro avec la minDistance
-                // (Si tu utilises minDistance, assure-toi qu'elle est intégrée ici)
             }
             a.incrementVelocity(acceleration);
         }

@@ -14,7 +14,7 @@ public class Edge {
     private Long sourceNodeId;
     private Long targetNodeId;
     @Builder.Default
-    private String color = "#FFFFF";
+    private String color = "#FFFFFF";
 
     public double length(Graph graph) {
         if (!graph.contains(id)) {

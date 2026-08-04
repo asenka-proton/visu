@@ -6,10 +6,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Graph {
 
-    private static long idCount = 1L;
+    private static final AtomicLong ID_COUNT = new AtomicLong(1L);
 
     private final Map<Long, Node> nodes = new HashMap<>();
     private final Map<Long, Edge> edges = new HashMap<>();
@@ -143,12 +144,7 @@ public class Graph {
         return builder.toString();
     }
 
-    public long nextId() {
-
-        long id;
-        do {
-            id = idCount++;
-        } while (contains(id));
-        return id;
+    private static long nextId() {
+        return ID_COUNT.getAndIncrement();
     }
 }
