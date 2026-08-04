@@ -35,8 +35,6 @@ public class GraphView extends Pane {
 
     @Setter
     private boolean layoutEngineActive = false;
-    @Setter
-    private boolean updateGraph = false;
 
     public GraphView(Graph graph, LayoutEngine engine) {
         this.graph = graph;

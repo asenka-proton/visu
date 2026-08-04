@@ -11,6 +11,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class LayoutEngineTest {
 
+    private static final Force REPULSION_FORCE = new RepulsionForce(2000, 50);
+    private static final Force ATTRACTION_FORCE = new AttractionForce(0.05, 300);
+    private static final Force GRAVITY_FORCE = new GravityForce(new Vector2D(200, 250), 0.01);
     private static final double EXPECTED_DISTANCE_BETWEEN_NODES = 100.0;
 
     @Test
@@ -61,7 +64,7 @@ class LayoutEngineTest {
             graph.addEdge(Edge.builder().id(100 + i).sourceNodeId(0L).targetNodeId(i).build());
         }
 
-        final LayoutEngine engine = new LayoutEngine();
+        final LayoutEngine engine = new LayoutEngine(LayoutEngine.DAMPING, REPULSION_FORCE, ATTRACTION_FORCE, GRAVITY_FORCE);
 
         System.out.println("Start simulation...");
         System.out.println("Initial state: \n" + graph);

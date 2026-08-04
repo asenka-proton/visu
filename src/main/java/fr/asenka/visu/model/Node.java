@@ -15,7 +15,7 @@ public class Node {
     private String label;
     private String content;
     @Builder.Default
-    private String color = "#FFFFF";
+    private String color = "#FFFFFF";
     @Builder.Default
     private Vector2D location = Vector2D.ORIGIN;
     @Builder.Default

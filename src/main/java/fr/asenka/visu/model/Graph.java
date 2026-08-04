@@ -10,8 +10,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class Graph {
 
-    private static final AtomicLong ID_COUNT = new AtomicLong(1L);
-
+    private final AtomicLong idCount = new AtomicLong(1L);
     private final Map<Long, Node> nodes = new HashMap<>();
     private final Map<Long, Edge> edges = new HashMap<>();
 
@@ -144,7 +143,7 @@ public class Graph {
         return builder.toString();
     }
 
-    private static long nextId() {
-        return ID_COUNT.getAndIncrement();
+    private long nextId() {
+        return idCount.getAndIncrement();
     }
 }
