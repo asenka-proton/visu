@@ -8,6 +8,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashMap;
@@ -20,6 +21,7 @@ public class GraphView extends Pane {
 
     private final Map<Long, NodeView> nodeViews = new HashMap<>();
     private final Map<Long, EdgeView> edgeViews = new HashMap<>();
+    @Getter
     private final Group contentGroup = new Group();
     private final Pane edgeLayer = new Pane();
     private final Pane nodeLayer = new Pane();
@@ -33,6 +35,8 @@ public class GraphView extends Pane {
 
     @Setter
     private boolean layoutEngineActive = false;
+    @Setter
+    private boolean updateGraph = false;
 
     public GraphView(Graph graph, LayoutEngine engine) {
         this.graph = graph;
@@ -55,7 +59,7 @@ public class GraphView extends Pane {
 
     private void renderGraph() {
         for (Node node : graph.getNodes()) {
-            final NodeView nodeView = new NodeView(node, contentGroup);
+            final NodeView nodeView = new NodeView(node, this);
             nodeViews.put(node.getId(), nodeView);
             nodeLayer.getChildren().add(nodeView);
         }
@@ -68,8 +72,6 @@ public class GraphView extends Pane {
 
             if (source != null && target != null) {
                 edgeView.update(source, target);
-                source.getListeners().add(() -> edgeView.update(source, target));
-                target.getListeners().add(() -> edgeView.update(source, target));
             }
             edgeViews.put(edge.getId(), edgeView);
             edgeLayer.getChildren().add(edgeView);
@@ -118,12 +120,21 @@ public class GraphView extends Pane {
             @Override
             public void handle(long now) {
 
+                // On recalcule la position des nœuds dans le modèle (si le layout est activé)
+
                 if (layoutEngineActive) {
                     engine.update(graph);
                 }
 
+                // On met à jour la position des liens entre les noeuds
+                for (EdgeView edgeView : edgeViews.values()) {
+                    final NodeView source = nodeViews.get(edgeView.getSourceNodeId());
+                    final NodeView target = nodeViews.get(edgeView.getTargetNodeId());
+                    edgeView.update(source, target);
+                }
+                // On met à jour la position des nœuds en conséquence
                 for (NodeView nodeView : nodeViews.values()) {
-                    nodeView.update();
+                    nodeView.updatePosition();
                 }
             }
         };

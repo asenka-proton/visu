@@ -17,27 +17,6 @@ public class AttractionForce implements Force {
     @Override
     public void apply(Graph graph) {
 
-//        for (Node a : graph.getNodes()) {
-//            final Vector2D locationA = a.getLocation();
-//
-//            for (Node b : graph.getNodes()) {
-//
-//                if (a.equals(b)) continue;
-//
-//                final Vector2D locationB = b.getLocation();
-//                final Vector2D direction = locationA.subtract(locationB);
-//                final double currentDistance = direction.magnitude();
-//
-//                if (currentDistance > 0) {
-//                    final double magnitude = (currentDistance - restLength) * strength;
-//                    final Vector2D acceleration = direction.normalize().multiply(magnitude);
-//
-//                    a.incrementVelocity(acceleration.multiply(-0.5));
-//                    b.incrementVelocity(acceleration.multiply(0.5));
-//                }
-//            }
-//        }
-
         for (Edge edge : graph.getEdges()) {
 
             final Node source = graph.getNode(edge.getSourceNodeId());

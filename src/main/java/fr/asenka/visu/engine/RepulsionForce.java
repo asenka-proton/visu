@@ -5,38 +5,55 @@ import fr.asenka.visu.model.Node;
 import fr.asenka.visu.shared.Vector2D;
 import lombok.RequiredArgsConstructor;
 
+
+/**
+ * Force de répulsion appliquée entre tous les nœuds du graphe.
+ * Les nœuds se repoussent mutuellement pour éviter les collisions.
+ *
+ * La force suit une loi en 1/d² (comme la gravité newtonienne inversée).
+ */
 @RequiredArgsConstructor
 public class RepulsionForce implements Force {
 
-    private final double strength; // Force de répulsion (ex: 100.0)
-    private final double minDistance; // Pour éviter la division par zéro
+    /** Force de répulsion de base (ex: 10000.0). Plus c'est élevé, plus la répulsion est forte. */
+    private final double strength;
+
+    /** Distance minimale utilisée dans les calculs pour éviter division par zéro et instabilités. */
+    private final double minDistance;
 
     @Override
     public void apply(Graph graph) {
-        for (Node a : graph.getNodes()) {
-            Vector2D acceleration = Vector2D.ORIGIN;
-            final Vector2D locationA = a.getLocation();
+        for (Node nodeA : graph.getNodes()) {
+            Vector2D totalAcceleration = Vector2D.ORIGIN;
+            final Vector2D locationA = nodeA.getLocation();
 
-            for (Node b : graph.getNodes()) {
-                if (a.getId().equals(b.getId())) continue;
-
-                final Vector2D locationB = b.getLocation();
-                final Vector2D direction = locationA.subtract(locationB);
-                final double distance = direction.magnitude();
-
-                if (distance > 0) {
-                    // Cas normal : on utilise la direction réelle
-                    final double magnitude = strength / (distance * distance);
-                    acceleration = acceleration.add(direction.normalize().multiply(magnitude));
-                } else {
-                    // CAS CRITIQUE : Les nœuds sont superposés !
-                    // On génère une direction aléatoire pour les séparer
-                    double randomX = Math.random() * 2 - 1;
-                    double randomY = Math.random() * 2 - 1;
-                    acceleration = acceleration.add(new Vector2D(randomX, randomY).multiply(strength));
+            for (Node nodeB : graph.getNodes()) {
+                // On ne se repousse pas soi-même
+                if (nodeA.getId().equals(nodeB.getId())) {
+                    continue;
                 }
+
+                final Vector2D acceleration = getAcceleration(nodeB, locationA);
+                totalAcceleration = totalAcceleration.add(acceleration);
             }
-            a.incrementVelocity(acceleration);
+
+            nodeA.incrementVelocity(totalAcceleration);
         }
+    }
+
+    private Vector2D getAcceleration(Node nodeB, Vector2D locationA) {
+        final Vector2D locationB = nodeB.getLocation();
+
+        // Vecteur allant de B vers A (direction de la répulsion)
+        final Vector2D direction = locationA.subtract(locationB);
+        final double distance = direction.magnitude();
+
+        // Utilisation de minDistance comme borne inférieure pour la distance
+
+        final double effectiveDistance = Math.max(distance, minDistance);
+        final double normalizedMagnitude = strength / (effectiveDistance * effectiveDistance);
+
+        // Appliquer la force dans la direction
+        return direction.normalize().multiply(normalizedMagnitude);
     }
 }

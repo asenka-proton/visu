@@ -19,16 +19,14 @@ public class NodeView extends StackPane {
     private final Node model;
     private final Rectangle shape;
     private final Text label;
-    @Getter
-    private final List<Runnable> listeners = new ArrayList<>();
 
     private double clickedX, clickedY;
     private double mouseStartX, mouseStartY;
 
 
-    public NodeView(Node model, Group parent) {
+    public NodeView(Node model, GraphView graphView) {
         this.model = model;
-        this.parent = parent;
+        this.parent = graphView.getContentGroup();
         this.getStyleClass().add("node-container");
 
         shape = new Rectangle(50, 50);
@@ -42,14 +40,13 @@ public class NodeView extends StackPane {
         setOnMouseClicked(this::onMouseClicked);
         setOnMouseDragged(this::onMouseDragged);
 
-        update();
+        updatePosition();
     }
 
-    public void update() {
+    public void updatePosition() {
         final double newX = model.x() - (shape.getWidth() / 2);
         final double newY = model.y() - (shape.getHeight() / 2);
         relocate(newX, newY);
-        listeners.forEach(Runnable::run);
     }
 
     private void onMouseClicked(MouseEvent event) {
@@ -68,7 +65,7 @@ public class NodeView extends StackPane {
         final double deltaY = (event.getSceneY() - mouseStartY) - parent.getTranslateY();
 
         model.setLocation(clickedX + deltaX, clickedY + deltaY);
-        update();
+        updatePosition();
     }
 
 
