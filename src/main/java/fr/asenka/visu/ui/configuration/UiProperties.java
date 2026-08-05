@@ -11,4 +11,7 @@ public class UiProperties {
     private double width;
     private double height;
     private String stylesheet;
+    private double zoomMinScale;
+    private double zoomMaxScale;
+    private double zoomSensitivity;
 }

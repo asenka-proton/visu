@@ -5,10 +5,13 @@ import fr.asenka.visu.model.Edge;
 import fr.asenka.visu.model.Graph;
 import fr.asenka.visu.model.Node;
 import javafx.animation.AnimationTimer;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashMap;
@@ -16,8 +19,9 @@ import java.util.Map;
 
 import static fr.asenka.visu.ui.JavaFXUtils.targetNodeIs;
 
-
+@RequiredArgsConstructor
 public class GraphView extends Pane {
+
 
     private final Map<Long, NodeView> nodeViews = new HashMap<>();
     private final Map<Long, EdgeView> edgeViews = new HashMap<>();
@@ -28,6 +32,9 @@ public class GraphView extends Pane {
 
     private final Graph graph;
     private final LayoutEngine engine;
+    private final double zoomSensitivity;
+    private final double zoomMinScale;
+    private final double zoomMaxScale;
 
     private boolean moving;
     private double mouseX, mouseY;
@@ -35,11 +42,6 @@ public class GraphView extends Pane {
 
     @Setter
     private boolean layoutEngineActive = false;
-
-    public GraphView(Graph graph, LayoutEngine engine) {
-        this.graph = graph;
-        this.engine = engine;
-    }
 
     public void initialize() {
         render();
@@ -53,6 +55,7 @@ public class GraphView extends Pane {
         setOnMousePressed(this::onMousePressed);
         setOnMouseDragged(this::onMouseDragged);
         setOnMouseReleased(this::onMouseReleased);
+        setOnScroll(this::onScroll);
     }
 
     private void renderGraph() {
@@ -81,10 +84,9 @@ public class GraphView extends Pane {
 
     private void onMousePressed(MouseEvent mouseEvent) {
 
-        if (targetNodeIs(mouseEvent, NodeView.class)) {
-            // Si on a cliqué sur un NodeView, on ignore le déplacement
-            return;
-        }
+        // Si on a cliqué sur un NodeView, on ignore le déplacement
+        if (targetNodeIs(mouseEvent, NodeView.class)) return;
+
         moving = true;
         mouseX = mouseEvent.getSceneX();
         mouseY = mouseEvent.getSceneY();
@@ -94,9 +96,8 @@ public class GraphView extends Pane {
 
     private void onMouseDragged(MouseEvent mouseEvent) {
 
-        if (!moving) {
-            return;
-        }
+        if (!moving) return;
+
         final double deltaX = mouseEvent.getSceneX() - mouseX;
         final double deltaY = mouseEvent.getSceneY() - mouseY;
 
@@ -112,6 +113,38 @@ public class GraphView extends Pane {
         moving = false;
     }
 
+    private void onScroll(ScrollEvent event) {
+        double currentScale = contentGroup.getScaleX();
+
+        // Facteur de zoom
+        double zoomDelta = event.getDeltaY() * zoomSensitivity;
+        double newScale = currentScale * (1.0 + zoomDelta);
+        // Limite newScale entre minScale et maxScale (pour éviter le risque de valeur trop grande ou négative)
+        newScale = Math.clamp(newScale, zoomMinScale, zoomMaxScale);
+
+        if (newScale == currentScale) return;
+
+        // Conversion manuelle : position de la souris dans le repère local du contentGroup AVANT zoom
+        // On utilise screenToLocal pour obtenir les coordonnées du curseur dans le contentGroup
+        final Point2D localPoint = contentGroup.screenToLocal(event.getScreenX(), event.getScreenY());
+
+        // Appliquer le nouveau zoom
+        contentGroup.setScaleX(newScale);
+        contentGroup.setScaleY(newScale);
+
+        // Après le zoom, ce même point local est maintenant à une autre position à l'écran
+        // On ajuste la translation pour qu'il revienne sous la souris.
+        final Point2D newPosOnScreen = contentGroup.localToScreen(localPoint);
+
+        double dx = event.getScreenX() - newPosOnScreen.getX();
+        double dy = event.getScreenY() - newPosOnScreen.getY();
+
+        contentGroup.setTranslateX(contentGroup.getTranslateX() + dx);
+        contentGroup.setTranslateY(contentGroup.getTranslateY() + dy);
+
+        event.consume();
+    }
+
     private AnimationTimer createAnimatedTimerLayout() {
         return new AnimationTimer() {
 
@@ -119,12 +152,11 @@ public class GraphView extends Pane {
             public void handle(long now) {
 
                 // On recalcule la position des nœuds dans le modèle (si le layout est activé)
-
                 if (layoutEngineActive) {
                     engine.update(graph);
                 }
 
-                // On met à jour la position des liens entre les noeuds
+                // On met à jour la position des liens entre les nœuds
                 for (EdgeView edgeView : edgeViews.values()) {
                     final NodeView source = nodeViews.get(edgeView.getSourceNodeId());
                     final NodeView target = nodeViews.get(edgeView.getTargetNodeId());

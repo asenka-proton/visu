@@ -42,7 +42,5 @@ public class EngineProperties {
     @Builder
     public static class Gravity {
         private double strength;
-        private double centerX;
-        private double centerY;
     }
 }

@@ -5,6 +5,7 @@ import fr.asenka.visu.engine.configuration.EngineConfiguration;
 import fr.asenka.visu.model.Graph;
 import fr.asenka.visu.model.Node;
 import fr.asenka.visu.ui.views.GraphView;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,11 +20,20 @@ import java.util.Random;
 @Import({
         EngineConfiguration.class
 })
+@RequiredArgsConstructor
 public class VisuConfiguration {
+
+    private final VisuProperties properties;
 
     @Bean
     public GraphView graphView(Graph graph, LayoutEngine layoutEngine) {
-          return new GraphView(graph, layoutEngine);
+        return new GraphView(
+                graph,
+                layoutEngine,
+                properties.getUi().getZoomSensitivity(),
+                properties.getUi().getZoomMinScale(),
+                properties.getUi().getZoomMaxScale()
+        );
     }
 
 
