@@ -1,0 +1,7 @@
+=====================================
+                VISU
+=====================================
+  Graph Visualization Application
+
+  Spring Boot ${spring-boot.version}
+=====================================
