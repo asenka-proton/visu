@@ -35,6 +35,10 @@ public final class JavaFXUtils {
     }
 
     public static Point2D point2D(Vector2D vector2D) {
+
+        if (vector2D == null) {
+            return null;
+        }
         return new Point2D(vector2D.x(), vector2D.y());
     }
 

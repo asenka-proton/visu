@@ -4,13 +4,12 @@ import fr.asenka.visu.model.Edge;
 import fr.asenka.visu.model.Graph;
 import fr.asenka.visu.model.Node;
 import fr.asenka.visu.shared.Vector2D;
-import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class LayoutEngineTest {
 
+    // Un amortissement fluide pour un mouvement naturel
+    private static final double DEFAULT_DAMPING = 0.9;
     private static final Force REPULSION_FORCE = new RepulsionForce(2000, 50);
     private static final Force ATTRACTION_FORCE = new AttractionForce(0.05, 300);
     private static final Force GRAVITY_FORCE = new GravityForce(new Vector2D(200, 250), 0.01);
@@ -29,7 +28,7 @@ class LayoutEngineTest {
         graph.connect(n2, n3);
 
         final LayoutEngine engine = new LayoutEngine(
-                LayoutEngine.DAMPING,
+                DEFAULT_DAMPING,
                 new RepulsionForce(100.0, 20.0),
                 new AttractionForce(0.1, EXPECTED_DISTANCE_BETWEEN_NODES)
         );
@@ -64,7 +63,12 @@ class LayoutEngineTest {
             graph.addEdge(Edge.builder().id(100 + i).sourceNodeId(0L).targetNodeId(i).build());
         }
 
-        final LayoutEngine engine = new LayoutEngine(LayoutEngine.DAMPING, REPULSION_FORCE, ATTRACTION_FORCE, GRAVITY_FORCE);
+        final LayoutEngine engine = new LayoutEngine(
+                DEFAULT_DAMPING,
+                REPULSION_FORCE,
+                ATTRACTION_FORCE,
+                GRAVITY_FORCE
+        );
 
         System.out.println("Start simulation...");
         System.out.println("Initial state: \n" + graph);

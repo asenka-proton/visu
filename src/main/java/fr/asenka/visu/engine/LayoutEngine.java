@@ -9,11 +9,6 @@ import java.util.List;
 
 public class LayoutEngine {
 
-
-
-    // Un amortissement fluide pour un mouvement naturel
-    public static final double DAMPING = 0.9;
-
     private final List<Force> forces = new ArrayList<>();
     private final double damping;
 
@@ -28,7 +23,6 @@ public class LayoutEngine {
         for (Force force : forces) {
             force.apply(graph);
         }
-
 
         for (Node node : graph.getNodes()) {
 
