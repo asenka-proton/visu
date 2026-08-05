@@ -1,5 +1,7 @@
 package fr.asenka.visu.ui;
 
+import fr.asenka.visu.shared.Vector2D;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 
@@ -30,6 +32,10 @@ public final class JavaFXUtils {
             return false;
         }
         return node.getClass().equals(nodeClass);
+    }
+
+    public static Point2D point2D(Vector2D vector2D) {
+        return new Point2D(vector2D.x(), vector2D.y());
     }
 
     private JavaFXUtils() {}

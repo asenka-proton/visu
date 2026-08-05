@@ -10,8 +10,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.List;
+import static fr.asenka.visu.ui.JavaFXUtils.point2D;
 
 public class NodeView extends StackPane {
 
@@ -21,9 +20,8 @@ public class NodeView extends StackPane {
     private final Rectangle shape;
     private final Text label;
 
-    private double clickedX, clickedY;
-    private double mouseStartX, mouseStartY;
-
+    private Point2D clickedLocation;     // Position du nœud dans l'espace local au moment du clic
+    private Point2D mouseStartPosition;   // Position de la souris dans l'espace local au moment du clic
 
     public NodeView(Node model, GraphView graphView) {
         this.model = model;
@@ -38,7 +36,7 @@ public class NodeView extends StackPane {
 
         getChildren().addAll(shape, label);
 
-        setOnMouseClicked(this::onMouseClicked);
+        setOnMousePressed(this::onMousePressed);
         setOnMouseDragged(this::onMouseDragged);
 
         updatePosition();
@@ -50,36 +48,34 @@ public class NodeView extends StackPane {
         relocate(newX, newY);
     }
 
-    private void onMouseClicked(MouseEvent event) {
+    private void onMousePressed(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
-            clickedX = this.model.x();
-            clickedY = this.model.y();
+            // Stocker la position du nœud (x et y sont des doubles, on crée un Point2D)
+            clickedLocation = point2D(model.getLocation());
 
             // Convertir les coordonnées de la souris dans l'espace local du contentGroup
-            final Point2D localPoint = parent.sceneToLocal(event.getSceneX(), event.getSceneY());
-            mouseStartX = localPoint.getX();
-            mouseStartY = localPoint.getY();
+            mouseStartPosition = parent.sceneToLocal(event.getSceneX(), event.getSceneY());
         }
     }
 
     private void onMouseDragged(MouseEvent event) {
-
         // Convertir les coordonnées actuelles dans l'espace local du contentGroup
-        final Point2D localPoint = parent.sceneToLocal(event.getSceneX(), event.getSceneY());
+        final Point2D currentLocalPoint = parent.sceneToLocal(event.getSceneX(), event.getSceneY());
 
-        final double deltaX = localPoint.getX() - mouseStartX;
-        final double deltaY = localPoint.getY() - mouseStartY;
+        // Calculer le décalage (delta) en utilisant la soustraction de Point2D
+        final double deltaX = currentLocalPoint.getX() - mouseStartPosition.getX();
+        final double deltaY = currentLocalPoint.getY() - mouseStartPosition.getY();
 
-        model.setLocation(clickedX + deltaX, clickedY + deltaY);
+        model.setLocation(clickedLocation.getX() + deltaX, clickedLocation.getY() + deltaY);
         updatePosition();
     }
 
 
-    public double getShapeWidth() {
+    public final double getShapeWidth() {
         return shape.getWidth();
     }
 
-    public double getShapeHeight() {
+    public final double getShapeHeight() {
         return shape.getHeight();
     }
 }
