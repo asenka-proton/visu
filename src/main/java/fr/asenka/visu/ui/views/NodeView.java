@@ -1,6 +1,7 @@
 package fr.asenka.visu.ui.views;
 
 import fr.asenka.visu.model.Node;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -54,15 +55,20 @@ public class NodeView extends StackPane {
             clickedX = this.model.x();
             clickedY = this.model.y();
 
-            mouseStartX = event.getSceneX() - parent.getTranslateX();
-            mouseStartY = event.getSceneY() - parent.getTranslateY();
+            // Convertir les coordonnées de la souris dans l'espace local du contentGroup
+            final Point2D localPoint = parent.sceneToLocal(event.getSceneX(), event.getSceneY());
+            mouseStartX = localPoint.getX();
+            mouseStartY = localPoint.getY();
         }
     }
 
     private void onMouseDragged(MouseEvent event) {
 
-        final double deltaX = (event.getSceneX() - mouseStartX) - parent.getTranslateX();
-        final double deltaY = (event.getSceneY() - mouseStartY) - parent.getTranslateY();
+        // Convertir les coordonnées actuelles dans l'espace local du contentGroup
+        final Point2D localPoint = parent.sceneToLocal(event.getSceneX(), event.getSceneY());
+
+        final double deltaX = localPoint.getX() - mouseStartX;
+        final double deltaY = localPoint.getY() - mouseStartY;
 
         model.setLocation(clickedX + deltaX, clickedY + deltaY);
         updatePosition();
