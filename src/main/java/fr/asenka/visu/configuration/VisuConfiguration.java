@@ -6,6 +6,7 @@ import fr.asenka.visu.model.Graph;
 import fr.asenka.visu.model.Node;
 import fr.asenka.visu.ui.views.GraphView;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+@Slf4j
 @Configuration
 @EnableConfigurationProperties(VisuProperties.class)
 @Import({
@@ -40,6 +42,7 @@ public class VisuConfiguration {
     @Bean
     public Graph testGraph() {
 
+        log.debug("Loading test graph...");
         final Graph graph = new Graph();
 
         // 1. Configuration des paramètres
@@ -69,6 +72,7 @@ public class VisuConfiguration {
                 graph.connect(nodes.get(index1), nodes.get(index2));
             }
         }
+        log.trace("Test graph loaded: {}", graph);
         return graph;
     }
 }

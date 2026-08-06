@@ -1,7 +1,9 @@
 package fr.asenka.visu.configuration;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ConfigurableApplicationContext;
 
+@Slf4j
 public class SpringContext {
 
     private static ConfigurableApplicationContext context;
@@ -14,6 +16,7 @@ public class SpringContext {
         if (context == null) {
             throw new IllegalStateException("Spring context not initialized");
         }
+        log.debug("Requesting spring bean {}", beanClass);
         return context.getBean(beanClass);
     }
 }

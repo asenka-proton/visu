@@ -3,10 +3,12 @@ package fr.asenka.visu.engine;
 import fr.asenka.visu.model.Graph;
 import fr.asenka.visu.model.Node;
 import fr.asenka.visu.shared.Vector2D;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class LayoutEngine {
 
     private final List<Force> forces = new ArrayList<>();
@@ -19,7 +21,7 @@ public class LayoutEngine {
 
 
     public void update(Graph graph) {
-
+        log.trace("Update graph");
         for (Force force : forces) {
             force.apply(graph);
         }

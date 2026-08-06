@@ -13,12 +13,14 @@ import javafx.scene.layout.Pane;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static fr.asenka.visu.ui.JavaFXUtils.targetNodeIs;
 
+@Slf4j
 @RequiredArgsConstructor
 public class GraphView extends Pane {
 
@@ -84,6 +86,7 @@ public class GraphView extends Pane {
 
     private void onMousePressed(MouseEvent mouseEvent) {
 
+        log.trace("[MousePressed]");
         // Si on a cliqué sur un NodeView, on ignore le déplacement
         if (targetNodeIs(mouseEvent, NodeView.class)) return;
 
@@ -98,6 +101,8 @@ public class GraphView extends Pane {
 
         if (!moving) return;
 
+        log.trace("[MouseDragged]");
+
         final double deltaX = mouseEvent.getSceneX() - mouseX;
         final double deltaY = mouseEvent.getSceneY() - mouseY;
 
@@ -106,6 +111,7 @@ public class GraphView extends Pane {
     }
 
     private void onMouseReleased(MouseEvent mouseEvent) {
+        log.trace("[MouseRelease]");
         mouseX = 0;
         mouseY = 0;
         initialTranslateX = 0;
@@ -114,6 +120,9 @@ public class GraphView extends Pane {
     }
 
     private void onScroll(ScrollEvent event) {
+
+        log.trace("[Scroll]");
+
         double currentScale = contentGroup.getScaleX();
 
         // Facteur de zoom
@@ -146,6 +155,7 @@ public class GraphView extends Pane {
     }
 
     private AnimationTimer createAnimatedTimerLayout() {
+        log.debug("Create AnimationTimer for layout engine");
         return new AnimationTimer() {
 
             @Override

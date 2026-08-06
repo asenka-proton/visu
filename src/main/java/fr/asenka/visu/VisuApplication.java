@@ -7,9 +7,10 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
 
-
+@Slf4j
 public class VisuApplication extends Application {
 
     private VisuProperties properties;
@@ -30,6 +31,7 @@ public class VisuApplication extends Application {
         primaryStage.setTitle(properties.getUi().getTitle());
         primaryStage.setScene(scene);
         primaryStage.show();
+        log.debug("JavaFX application started!");
     }
 
     private @NonNull Scene createScene() {

@@ -5,7 +5,9 @@ import javafx.scene.Group;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class EdgeView extends Group {
 
     private final Line line = new Line();
@@ -28,6 +30,7 @@ public class EdgeView extends Group {
     }
 
     public void update(NodeView source, NodeView target) {
+        log.trace("update edge-view of: {}", model);
         if (source == null || target == null) {
             return;
         }
