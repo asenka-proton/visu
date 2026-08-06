@@ -1,6 +1,7 @@
 package fr.asenka.visu.model;
 
 import fr.asenka.visu.shared.Vector2D;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -8,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
+@Slf4j
 public class Graph {
 
     private final AtomicLong idCount = new AtomicLong(1L);
@@ -19,7 +21,7 @@ public class Graph {
     }
 
     public Node createNode(String label, Vector2D location) {
-
+        log.debug("create node: {} at {}", label, location);
         final Node node = Node.builder()
                 .id(nextId())
                 .label(label)
@@ -38,6 +40,7 @@ public class Graph {
     }
 
     public Edge createEdge(String label, long sourceId, long targetId) {
+        log.debug("create edge: {} -> {} : {}", sourceId, targetId, label);
         final Edge edge = Edge.builder()
                 .id(nextId())
                 .label(label)
@@ -49,7 +52,7 @@ public class Graph {
     }
 
     public void addNode(Node node) {
-
+        log.debug("add node: {}", node);
         if (node == null) {
             throw new IllegalArgumentException("null node not allowed");
         }
@@ -60,7 +63,7 @@ public class Graph {
     }
 
     public void addEdge(Edge edge) {
-
+        log.debug("add edge: {}", edge);
         if (edge == null) {
             throw new IllegalArgumentException("null edge not allowed");
         }
@@ -107,12 +110,14 @@ public class Graph {
     }
 
     public void removeNode(long id) {
+        log.debug("remove node: {}", id);
         if (nodes.remove(id) == null) {
             throw new IllegalArgumentException("node id not found: " + id);
         }
     }
 
     public void removeEdge(long id) {
+        log.debug("remove edge: {}", id);
         if (edges.remove(id) == null) {
             throw new IllegalArgumentException("edge id not found: " + id);
         }
@@ -127,8 +132,8 @@ public class Graph {
                     node.getId(),
                     node.getLabel(),
                     node.getLocation().x(),
-                    node.getLocation().y())
-            );
+                    node.getLocation().y()
+            ));
         });
         edges.values().forEach(edge -> {
             final var source = nodes.get(edge.getSourceNodeId());

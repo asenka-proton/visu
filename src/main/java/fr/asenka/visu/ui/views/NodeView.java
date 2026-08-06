@@ -9,9 +9,11 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import static fr.asenka.visu.ui.JavaFXUtils.point2D;
 
+@Slf4j
 public class NodeView extends StackPane {
 
     private final Group parent;
@@ -49,6 +51,7 @@ public class NodeView extends StackPane {
     }
 
     private void onMousePressed(MouseEvent event) {
+        log.trace("[MousePressed]");
         if (event.getButton() == MouseButton.PRIMARY) {
             // Stocker la position du nœud (x et y sont des doubles, on crée un Point2D)
             clickedLocation = point2D(model.getLocation());
@@ -59,6 +62,7 @@ public class NodeView extends StackPane {
     }
 
     private void onMouseDragged(MouseEvent event) {
+        log.trace("[MouseDragged]");
         // Convertir les coordonnées actuelles dans l'espace local du contentGroup
         final Point2D currentLocalPoint = parent.sceneToLocal(event.getSceneX(), event.getSceneY());
 

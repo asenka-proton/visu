@@ -6,6 +6,7 @@ import fr.asenka.visu.ui.views.GraphView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
@@ -41,16 +42,24 @@ public class VisuApplication extends Application {
                 properties.getUi().getHeight()
         );
 
-        scene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.CONTROL) {
-                graphView.setLayoutEngineActive(true);
-            }
-        });
-        scene.setOnKeyReleased(event -> {
-            if (event.getCode() == KeyCode.CONTROL) {
-                graphView.setLayoutEngineActive(false);
-            }
-        });
+        scene.setOnKeyPressed(this::onKeyPressed);
+        scene.setOnKeyReleased(this::onKeyReleased);
         return scene;
+    }
+
+    private void onKeyPressed(KeyEvent event) {
+        log.trace("[KeyPressed]");
+        if (event.getCode() == KeyCode.CONTROL) {
+            log.debug("Layout engine: ON");
+            graphView.setLayoutEngineActive(true);
+        }
+    }
+
+    private void onKeyReleased(KeyEvent event) {
+        log.trace("[KeyReleased]");
+        if (event.getCode() == KeyCode.CONTROL) {
+            log.debug("Layout engine: OFF");
+            graphView.setLayoutEngineActive(false);
+        }
     }
 }

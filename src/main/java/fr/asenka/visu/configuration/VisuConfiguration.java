@@ -46,8 +46,8 @@ public class VisuConfiguration {
         final Graph graph = new Graph();
 
         // 1. Configuration des paramètres
-        int nodeCount = 35;           // Nombre de nœuds
-        int edgeCount = 40;          // Nombre de connexions
+        int nodeCount = 1000;           // Nombre de nœuds
+        int edgeCount = 800;          // Nombre de connexions
         Random random = new Random();
 
         List<Node> nodes = new ArrayList<>();
