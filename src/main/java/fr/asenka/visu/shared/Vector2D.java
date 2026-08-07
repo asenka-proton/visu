@@ -27,6 +27,34 @@ public record Vector2D(double x, double y) {
     }
 
     /**
+     * Alias for x()
+     */
+    public double first() {
+        return x();
+    }
+
+    /**
+     * Alias for y()
+     */
+    public double second() {
+        return y();
+    }
+
+    /**
+     * Alias for x()
+     */
+    public double left() {
+        return x();
+    }
+
+    /**
+     * Alias for y()
+     */
+    public double right() {
+        return y();
+    }
+
+    /**
      * Ajoute un autre vecteur à celui-ci.
      *
      * @param other Le vecteur à ajouter.

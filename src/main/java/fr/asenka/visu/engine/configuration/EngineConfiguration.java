@@ -1,10 +1,7 @@
 package fr.asenka.visu.engine.configuration;
 
 import fr.asenka.visu.configuration.VisuProperties;
-import fr.asenka.visu.engine.AttractionForce;
-import fr.asenka.visu.engine.GravityForce;
-import fr.asenka.visu.engine.LayoutEngine;
-import fr.asenka.visu.engine.RepulsionForce;
+import fr.asenka.visu.engine.*;
 import fr.asenka.visu.shared.Vector2D;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -46,10 +43,10 @@ public class EngineConfiguration {
     }
 
     @Bean
-    public LayoutEngine layoutEngine(RepulsionForce repulsion,
-                                     AttractionForce attraction,
-                                     GravityForce gravity) {
-        return new LayoutEngine(
+    public ForcesLayoutEngine layoutEngine(RepulsionForce repulsion,
+                                           AttractionForce attraction,
+                                           GravityForce gravity) {
+        return new ForcesLayoutEngine(
                 properties.getEngine().getLayout().getDamping(),
                 repulsion,
                 attraction,

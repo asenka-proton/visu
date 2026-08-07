@@ -1,5 +1,6 @@
 package fr.asenka.visu.ui.views;
 
+import fr.asenka.visu.engine.ForcesLayoutEngine;
 import fr.asenka.visu.engine.LayoutEngine;
 import fr.asenka.visu.model.Edge;
 import fr.asenka.visu.model.Graph;

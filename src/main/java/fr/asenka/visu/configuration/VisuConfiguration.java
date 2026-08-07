@@ -1,6 +1,6 @@
 package fr.asenka.visu.configuration;
 
-import fr.asenka.visu.engine.LayoutEngine;
+import fr.asenka.visu.engine.ForcesLayoutEngine;
 import fr.asenka.visu.engine.configuration.EngineConfiguration;
 import fr.asenka.visu.model.Graph;
 import fr.asenka.visu.model.Node;
@@ -28,7 +28,7 @@ public class VisuConfiguration {
     private final VisuProperties properties;
 
     @Bean
-    public GraphView graphView(Graph graph, LayoutEngine layoutEngine) {
+    public GraphView graphView(Graph graph, ForcesLayoutEngine layoutEngine) {
         return new GraphView(
                 graph,
                 layoutEngine,

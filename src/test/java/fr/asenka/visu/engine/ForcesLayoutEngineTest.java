@@ -6,7 +6,7 @@ import fr.asenka.visu.model.Node;
 import fr.asenka.visu.shared.Vector2D;
 import org.junit.jupiter.api.Test;
 
-class LayoutEngineTest {
+class ForcesLayoutEngineTest {
 
     // Un amortissement fluide pour un mouvement naturel
     private static final double DEFAULT_DAMPING = 0.9;
@@ -27,7 +27,7 @@ class LayoutEngineTest {
         graph.connect(n1, n2);
         graph.connect(n2, n3);
 
-        final LayoutEngine engine = new LayoutEngine(
+        final ForcesLayoutEngine engine = new ForcesLayoutEngine(
                 DEFAULT_DAMPING,
                 new RepulsionForce(100.0, 20.0),
                 new AttractionForce(0.1, EXPECTED_DISTANCE_BETWEEN_NODES)
@@ -63,7 +63,7 @@ class LayoutEngineTest {
             graph.addEdge(Edge.builder().id(100 + i).sourceNodeId(0L).targetNodeId(i).build());
         }
 
-        final LayoutEngine engine = new LayoutEngine(
+        final ForcesLayoutEngine engine = new ForcesLayoutEngine(
                 DEFAULT_DAMPING,
                 REPULSION_FORCE,
                 ATTRACTION_FORCE,

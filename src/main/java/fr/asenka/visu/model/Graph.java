@@ -1,6 +1,9 @@
 package fr.asenka.visu.model;
 
 import fr.asenka.visu.shared.Vector2D;
+import jakarta.annotation.Nullable;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
@@ -10,11 +13,19 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Slf4j
+@RequiredArgsConstructor
 public class Graph {
 
+    @Getter
+    @Nullable
+    private final String label;
     private final AtomicLong idCount = new AtomicLong(1L);
     private final Map<Long, Node> nodes = new HashMap<>();
     private final Map<Long, Edge> edges = new HashMap<>();
+
+    public Graph() {
+        this(null);
+    }
 
     public Node createNode(String label, double x, double y) {
         return createNode(label, new Vector2D(x, y));
